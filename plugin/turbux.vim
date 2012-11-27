@@ -22,6 +22,7 @@ endfunction
 
 call s:turbux_command_setting("rspec", "rspec")
 call s:turbux_command_setting("test_unit", "ruby -Itest")
+call s:turbux_command_setting("minitest", "ruby -Itest")
 call s:turbux_command_setting("turnip", "rspec -rturnip")
 call s:turbux_command_setting("cucumber", "cucumber -rfeatures")
 call s:turbux_command_setting("prefix", "")
@@ -69,10 +70,10 @@ endfunction
 
 " Test running {{{1
 function! s:prefix_for_test(file)
-  if a:file =~# '_spec.rb$'
+  if a:file =~# '\(\<test.*\|_test\)\.rb$'
+    return g:turbux_command_minitest
+  elseif a:file =~# '_spec.rb$'
     return g:turbux_command_rspec
-  elseif a:file =~# '\(\<test_.*\|_test\)\.rb$'
-    return g:turbux_command_test_unit
   elseif a:file =~# '.feature$'
     if a:file =~# '\<spec/'
       return g:turbux_command_turnip
